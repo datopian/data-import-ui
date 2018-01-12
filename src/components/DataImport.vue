@@ -20,6 +20,7 @@
 <script>
   import Vue from 'vue'
   import * as _ from 'lodash'
+  import {genUUID} from '../mixins/helpers'
 
   export default {
     name: 'DataImport',
@@ -36,7 +37,18 @@
       enterHit: function(e) {
         const urlToData = e.target.value
         // Generate pipeline desctiptor using url
-        let body = {"actions":[{"verb":"source","uuid":"e43534","options":{"revision":1, "url": urlToData}}]}
+        let body = {
+          actions: [
+            {
+              verb: 'source',
+              uuid: genUUID(),
+              options: {
+                revision: 1,
+                url: urlToData
+              }
+            }
+          ]
+        }
         this.$http.post('http://localhost:8000/config', body).then(response => {
           let source = new EventSource(`http://localhost:8000/events/${response.body.id}`)
           source.onmessage = (event) => {
