@@ -5,9 +5,15 @@
     <p>
       {{rowCount}}
     </p>
-    <p>
-      {{rows}}
-    </p>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <tbody>
+          <tr v-for="row in rows">
+            <td v-for="value in row">{{value}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -53,10 +59,8 @@
               this.state = 'done'
             } else if (rt.e == 'r') {
               if (rt.idx >= this.rowCount) {
-                let data = _.mapValues(rt.data, (v_) => {
-                  return {v: v_};
-                });
-                this.rows.push({idx: rt.idx + 1, data: data})
+                let data = Object.values(rt.data)
+                this.rows.push(data)
                 this.rowCount = rt.idx + 1;
               }
             } else if (rt.e == 've') {
