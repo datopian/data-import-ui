@@ -1,24 +1,26 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld/>
+    <DataImport></DataImport>
+    <DataPreview></DataPreview>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import DataImport from './components/DataImport'
+import DataPreview from './components/DataPreview'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    DataImport,
+    DataPreview
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Lato', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
