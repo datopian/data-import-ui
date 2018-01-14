@@ -3,8 +3,9 @@
     <h1>Import data</h1>
     <input type="url" v-on:keyup.enter="enterHit" placeholder="URL" />
     <p>
-      {{rowCount}}
+      {{rowCount}} rows processed
     </p>
+    <p v-if="error" v-html="error"></p>
     <div class="table-responsive">
       <table class="table table-bordered table-striped">
         <tbody>
@@ -30,24 +31,26 @@
         badrowcount: 0,
         error: null,
         rows: [],
-        state: 'pending'
+        state: 'pending',
+        steps: [
+          {
+            verb: 'source',
+            uuid: genUUID(),
+            options: {
+              revision: 0
+            }
+          }
+        ]
       }
     },
     methods: {
       enterHit: function(e) {
         const urlToData = e.target.value
         // Generate pipeline desctiptor using url
+        this.steps[0].options.revision = 1
+        this.steps[0].options.url = urlToData
         let body = {
-          actions: [
-            {
-              verb: 'source',
-              uuid: genUUID(),
-              options: {
-                revision: 1,
-                url: urlToData
-              }
-            }
-          ]
+          actions: this.steps
         }
         this.$http.post('http://localhost:8000/config', body).then(response => {
           let source = new EventSource(`http://localhost:8000/events/${response.body.id}`)
